@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Filter Logger"""
+import datetime
 import re
 import logging
 from typing import List, Tuple
@@ -70,3 +71,25 @@ def get_db():
     except Error as e:
         print(f"Error: {e}")
         return None
+
+def main():
+    """Main function to retrieve and display user data."""
+    db = get_db()
+    if db:
+        cursor = db.cursor()
+        cursor.execute("SELECT name, email, phone, ssn,\
+                        password, ip, last_login, user_agent FROM users;")
+        rows = cursor.fetchall()
+
+        for row in rows:
+            name, email, phone, ssn, password, ip, last_login, user_agent = row
+            # Display the filtered data
+            print(f"[HOLBERTON] user_data INFO {datetime.datetime.now()}: "
+                  f"name=***; email=***; phone=***; ssn=***; password=***; "
+                  f"ip={ip}; last_login={last_login}; user_agent={user_agent};")
+
+        cursor.close()
+        db.close()
+
+if __name__ == "__main__":
+    main()
