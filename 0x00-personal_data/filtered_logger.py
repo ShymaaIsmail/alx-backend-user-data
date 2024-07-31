@@ -51,6 +51,7 @@ class RedactingFormatter(logging.Formatter):
         return filter_datum(self.fields, self.REDACTION,
                             original_message, self.SEPARATOR)
 
+
 def get_db():
     """Create a connection to the database using environment variables."""
     username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
@@ -72,6 +73,7 @@ def get_db():
         print(f"Error: {e}")
         return None
 
+
 def main():
     """Main function to retrieve and display user data."""
     db = get_db()
@@ -86,10 +88,12 @@ def main():
             # Display the filtered data
             print(f"[HOLBERTON] user_data INFO {datetime.datetime.now()}: "
                   f"name=***; email=***; phone=***; ssn=***; password=***; "
-                  f"ip={ip}; last_login={last_login}; user_agent={user_agent};")
+                  f"ip={ip}; last_login={last_login}; user_agent={user_agent};"
+                  )
 
         cursor.close()
         db.close()
+
 
 if __name__ == "__main__":
     main()
