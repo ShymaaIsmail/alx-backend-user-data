@@ -84,7 +84,7 @@ def main():
         rows = cursor.fetchall()
 
         for row in rows:
-            name, email, phone, ssn, password, ip, last_login, user_agent = row
+            ip, last_login, user_agent = row
             # Display the filtered data
             print(f"[HOLBERTON] user_data INFO {datetime.datetime.now()}: "
                   f"name=***; email=***; phone=***; ssn=***; password=***; "

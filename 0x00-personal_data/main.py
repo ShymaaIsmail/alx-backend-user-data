@@ -11,6 +11,10 @@ PII_FIELDS = __import__('filtered_logger').PII_FIELDS
 get_db = __import__('filtered_logger').get_db
 
 
+hash_password = __import__('encrypt_password').hash_password
+is_valid = __import__('encrypt_password').is_valid
+
+
 ##TASK 0 TESTING
 fields = ["password", "date_of_birth"]
 messages = ["name=egg;email=eggmin@eggsample.com;password=eggcellent;date_of_birth=12/12/1986;", "name=bob;email=bob@dylan.com;password=bobbycool;date_of_birth=03/04/1993;"]
@@ -32,9 +36,19 @@ print("PII_FIELDS: {}".format(len(PII_FIELDS)))
 
 ## TASK 3 TESTING
 db = get_db()
-cursor = db.cursor()
-cursor.execute("SELECT COUNT(*) FROM users;")
-for row in cursor:
-    print(row[0])
-cursor.close()
-db.close()
+if db:
+    cursor = db.cursor()
+    cursor.execute("SELECT COUNT(*) FROM users;")
+    for row in cursor:
+        print(row[0])
+    cursor.close()
+    db.close()
+
+
+
+##TASK 5 TESTING
+
+password = "MyAmazingPassw0rd"
+encrypted_password = hash_password(password)
+print(encrypted_password)
+print(is_valid(encrypted_password, password))
