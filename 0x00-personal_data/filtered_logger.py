@@ -53,7 +53,7 @@ class RedactingFormatter(logging.Formatter):
                             original_message, self.SEPARATOR)
 
 
-def get_db() -> mysql.connector.connection.MYSQLConnection:
+def get_db() -> mysql.connector.connection.MySQLConnection:
     """ Connection to MySQL environment """
     db_connect = mysql.connector.connect(
         user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
@@ -62,7 +62,6 @@ def get_db() -> mysql.connector.connection.MYSQLConnection:
         database=os.getenv('PERSONAL_DATA_DB_NAME')
     )
     return db_connect
-
 
 def main():
     """Main function to retrieve and display user data."""
