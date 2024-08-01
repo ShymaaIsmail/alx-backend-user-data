@@ -4,9 +4,8 @@ import datetime
 import re
 import logging
 from typing import List, Tuple
-import os
+from os import environ
 import mysql.connector
-from mysql.connector import Error
 
 
 PII_FIELDS: Tuple[str, ...] = ("name", "email", "phone", "ssn", "password")
@@ -56,10 +55,10 @@ class RedactingFormatter(logging.Formatter):
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """Create a connection to the database using environment variables."""
-    username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
-    password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
-    host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
-    database = os.getenv("PERSONAL_DATA_DB_NAME")
+    username = environ.get("PERSONAL_DATA_DB_USERNAME", "root")
+    password = environ.get("PERSONAL_DATA_DB_PASSWORD", "")
+    host = environ.get("PERSONAL_DATA_DB_HOST", "localhost")
+    database = environ.get("PERSONAL_DATA_DB_NAME")
     connection = mysql.connector.MySQLConnection(
             user=username,
             password=password,
