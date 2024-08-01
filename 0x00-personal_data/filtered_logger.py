@@ -54,7 +54,7 @@ class RedactingFormatter(logging.Formatter):
                             original_message, self.SEPARATOR)
 
 
-def get_db():
+def get_db() -> mysql.connector.connection.MySQLConnection:
     """Create a connection to the database using environment variables."""
     username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
     password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")

@@ -36,13 +36,12 @@ print("PII_FIELDS: {}".format(len(PII_FIELDS)))
 
 ## TASK 3 TESTING
 db = get_db()
-if db:
-    cursor = db.cursor()
-    cursor.execute("SELECT COUNT(*) FROM users;")
-    for row in cursor:
-        print(row[0])
-    cursor.close()
-    db.close()
+cursor = db.cursor()
+cursor.execute("SELECT COUNT(*) FROM users;")
+for row in cursor:
+    print(row[0])
+cursor.close()
+db.close()
 
 
 
