@@ -71,9 +71,9 @@ def get_db():
         )
         if connection.is_connected():
             return connection
-    except Error as e:
-        print(f"Error: {e}")
+    except Error:
         return None
+    return None
 
 
 def main():
