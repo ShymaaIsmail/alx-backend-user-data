@@ -63,6 +63,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     )
     return db_connect
 
+
 def main():
     """Main function to retrieve and display user data."""
     db = get_db()
