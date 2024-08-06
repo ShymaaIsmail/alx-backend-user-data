@@ -9,8 +9,21 @@ from flask import request, jsonify
 class Auth():
     """Auth Class"""
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """check require auth"""
-        return False
+        """Check if the path requires authentication"""
+        if path is None:
+            return True
+
+        if not excluded_paths:
+            return True
+
+        # Normalize path to ensure consistency (remove trailing slash)
+        if path[-1] != '/':
+            path += '/'
+
+        # Check if the path is in the list of excluded paths
+        if path in excluded_paths:
+            return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """get authorization header"""
