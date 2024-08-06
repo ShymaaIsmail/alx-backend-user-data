@@ -20,7 +20,7 @@ class Auth():
         if path in excluded_paths:
             return False
         for excluded_path in excluded_paths:
-            if(re.match(excluded_path, path)):
+            if(re.match(excluded_path, path.strip('/'))):
                 return False
         return True
 
