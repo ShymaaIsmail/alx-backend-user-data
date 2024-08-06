@@ -18,9 +18,9 @@ auth = None  # Initialize auth variable
 # Load authentication based on AUTH_TYPE environment variable
 auth_type = getenv("AUTH_TYPE")
 
-if auth_type == "auth":
-    from api.v1.auth.auth import Auth  # Import Auth class
-    auth = Auth()  # Create an instance of Auth
+if auth_type == "basic_auth":
+    from api.v1.auth.basic_auth import BasicAuth
+    auth = BasicAuth()
 
 
 @app.before_request
