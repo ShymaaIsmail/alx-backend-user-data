@@ -1,34 +1,66 @@
 #!/usr/bin/env python3
-"""Auth Module for the API"""
+"""
+Route module for the API
+"""
+from os import getenv
+from flask import Flask, jsonify, abort, request
+from flask_cors import CORS
+from api.v1.views import app_views
+
+app = Flask(__name__)
+app.register_blueprint(app_views)
+
+# CORS configuration
+CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+
+auth = None  # Initialize auth variable
+
+# Load authentication based on AUTH_TYPE environment variable
+auth_type = getenv("AUTH_TYPE")
+
+if auth_type == "Auth":
+    from api.v1.auth.auth import Auth  # Import Auth class
+    auth = Auth()  # Create an instance of Auth
 
 
-from typing import List, TypeVar
-from flask import request, jsonify
+@app.before_request
+def filter_request() -> None:
+    """Filter each request for authentication."""
+    if auth is None:
+        return
+
+    excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+
+    # Check if the request path requires authentication
+    if auth.require_auth(request.path, excluded_paths):
+        # Check for authorization header
+        if auth.authorization_header(request) is None:
+            abort(401)  # Unauthorized
+
+        # Check for current user
+        if auth.current_user(request) is None:
+            abort(403)  # Forbidden
 
 
-class Auth():
-    """Auth Class"""
-    def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """Check if the path requires authentication"""
-        if path is None:
-            return True
+@app.errorhandler(404)
+def not_found(error) -> str:
+    """ Not found handler """
+    return jsonify({"error": "Not found"}), 404
 
-        if not excluded_paths:
-            return True
 
-        # Normalize path to ensure consistency (remove trailing slash)
-        if path[-1] != '/':
-            path += '/'
+@app.errorhandler(401)
+def unauthorized(error) -> str:
+    """ Unauthorized handler """
+    return jsonify({"error": "Unauthorized"}), 401
 
-        # Check if the path is in the list of excluded paths
-        if path in excluded_paths:
-            return False
-        return True
 
-    def authorization_header(self, request=None) -> str:
-        """get authorization header"""
-        return None
+@app.errorhandler(403)
+def forbidden(error) -> str:
+    """ Forbidden handler """
+    return jsonify({"error": "Forbidden"}), 403
 
-    def current_user(self, request=None) -> TypeVar('User'):
-        """get current user"""
-        return None
+
+if __name__ == "__main__":
+    host = getenv("API_HOST", "0.0.0.0")
+    port = getenv("API_PORT", "5000")
+    app.run(host=host, port=port)
