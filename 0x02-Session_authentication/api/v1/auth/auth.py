@@ -2,6 +2,7 @@
 """Auth Module for the API"""
 
 
+import os
 import re
 from typing import List, TypeVar
 from flask import request, jsonify
@@ -34,3 +35,14 @@ class Auth():
     def current_user(self, request=None) -> TypeVar('User'):
         """get current user"""
         return None
+
+    def session_cookie(self, request=None):
+        """Returns the value of the session cookie from the request"""
+        if request is None:
+            return None
+
+        # Retrieve the session cookie name from the environment variable SESSION_NAME
+        session_name = os.getenv("SESSION_NAME", "_my_session_id")
+
+        # Get the cookie value from the request
+        return request.cookies.get(session_name)
