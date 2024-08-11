@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """ Module of Expiration of Session Authentication
 """
+from os import getenv
 from datetime import datetime, timedelta
 from api.v1.auth.session_auth import SessionAuth
-from models.user import User
-from os import getenv
 
 
 class SessionExpAuth(SessionAuth):
