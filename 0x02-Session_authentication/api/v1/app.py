@@ -30,6 +30,7 @@ elif auth_type == "session_db_auth":
     from api.v1.auth.session_db_auth import SessionDBAuth
     auth = SessionDBAuth()
 
+
 @app.before_request
 def filter_request() -> None:
     """Filter each request for authentication."""

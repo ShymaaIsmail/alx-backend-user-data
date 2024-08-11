@@ -6,6 +6,7 @@
 from models.base import Base
 import uuid
 
+
 class UserSession(Base):
     """UserSession model to manage user sessions stored in the database"""
 
