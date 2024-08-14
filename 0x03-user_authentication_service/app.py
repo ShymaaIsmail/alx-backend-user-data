@@ -26,6 +26,23 @@ def users() -> str:
         return jsonify({"message": "email already registered"}), 400
 
 
+@app.route('/sessions', methods=['DELETE'])
+def logout():
+    """Log out a user and destroy their session."""
+    # Get the session ID from cookies
+    session_id = request.cookies.get('session_id')
+    if not session_id:
+        return make_response("Session ID not provided", 403)
+    # Attempt to find the user by session ID
+    user = AUTH.get_user_from_session_id(session_id)
+    if user:
+        # Destroy the session
+        AUTH.destroy_session(user.id)
+    else:
+        # User not found, respond with 403
+        return make_response("Forbidden", 403)
+
+
 @app.route('/sessions', methods=['POST'])
 def login() -> str:
     """Log in a user and start a session."""
