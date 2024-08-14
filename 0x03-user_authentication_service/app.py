@@ -59,5 +59,20 @@ def login() -> str:
     return response
 
 
+@app.route('/profile', methods=['GET'])
+def profile():
+    """Return the user's profile information."""
+    # Get the session ID from cookies
+    session_id = request.cookies.get('session_id')
+    # Attempt to find the user by session ID
+    user = AUTH.get_user_from_session_id(session_id)
+    if user:
+        # Respond with user email
+        return jsonify({"email": user.email}), 200
+    else:
+        # User not found or invalid session ID
+        return make_response("Forbidden", 403)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
