@@ -9,22 +9,23 @@ from db import DB
 from user import User
 
 
+def _hash_password(password: str) -> bytes:
+    """Hash a password using bcrypt.
+
+    Args:
+        password (str): The password to hash.
+
+    Returns:
+        bytes: The hashed password.
+    """
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+
 class Auth:
     """Auth class to interact with the authentication database."""
 
     def __init__(self):
         self._db = DB()
-
-    def _hash_password(self, password: str) -> bytes:
-        """Hash a password using bcrypt.
-
-        Args:
-            password (str): The password to hash.
-
-        Returns:
-            bytes: The hashed password.
-        """
-        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     def register_user(self, email: str, password: str) -> User:
         """Register a new user.
